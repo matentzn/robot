@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import com.github.jsonldjava.core.Context;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,17 +20,35 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 /** Tests for IOHelper. */
 public class IOHelperTest extends CoreTest {
+
+  /**
+   * Test adding prefixes using the addPrefixes method
+   *
+   * @throws IOException on problem creating IOHelper or adding prefixes
+   */
+  @Test
+  public void testAddPrefixes() throws IOException {
+    // IOHelper without default prefixes
+    IOHelper ioh = new IOHelper(false);
+
+    // Single prefix to add from a context
+    String inputContext = "{\n  \"@context\" : {\n    \"foo\" : \"http://foo.bar\"\n  }\n}";
+    Context context = IOHelper.parseContext(inputContext);
+    ioh.addPrefixes(context);
+
+    // Get the context back from IOHelper
+    String outputContext = ioh.getContextString();
+    assertEquals(inputContext, outputContext);
+  }
+
   /**
    * Test loading JSON files.
    *
    * @throws IOException on file problem
    */
   @Test
-  public void testJSON() throws IOException {
-    IOHelper ioh = new IOHelper();
-    String jsonPath = this.getClass().getResource("/simple.json").getFile();
-    File jsonFile = new File(jsonPath);
-    assertIdentical("/simple.owl", ioh.loadOntology(jsonFile));
+  public void testJSON() throws IOException, URISyntaxException {
+    assertIdentical("/simple.owl", loadOntologyWithCatalog("/simple.json"));
   }
 
   /**
@@ -38,11 +57,8 @@ public class IOHelperTest extends CoreTest {
    * @throws IOException on file problem
    */
   @Test
-  public void testYAML() throws IOException {
-    IOHelper ioh = new IOHelper();
-    String yamlPath = this.getClass().getResource("/simple.yaml").getFile();
-    File yamlFile = new File(yamlPath);
-    assertIdentical("/simple.owl", ioh.loadOntology(yamlFile));
+  public void testYAML() throws IOException, URISyntaxException {
+    assertIdentical("/simple.owl", loadOntologyWithCatalog("/simple.json"));
   }
 
   /**

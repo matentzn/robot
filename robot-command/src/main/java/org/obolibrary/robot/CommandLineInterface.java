@@ -20,15 +20,18 @@ public class CommandLineInterface {
   private static CommandManager initManager() {
     CommandManager m = new CommandManager();
     m.addCommand("annotate", new AnnotateCommand());
+    m.addCommand("collapse", new CollapseCommand());
     m.addCommand("convert", new ConvertCommand());
     m.addCommand("diff", new DiffCommand());
     m.addCommand("explain", new ExplainCommand());
+    m.addCommand("export", new ExportCommand());
     m.addCommand("export-prefixes", new ExportPrefixesCommand());
     m.addCommand("extract", new ExtractCommand());
     m.addCommand("filter", new FilterCommand());
     m.addCommand("materialize", new MaterializeCommand());
     m.addCommand("merge", new MergeCommand());
     m.addCommand("mirror", new MirrorCommand());
+    m.addCommand("python", new PythonCommand());
     m.addCommand("query", new QueryCommand());
     m.addCommand("reason", new ReasonCommand());
     m.addCommand("reduce", new ReduceCommand());
